@@ -75,5 +75,5 @@ fig.suptitle('Network of 5 electrically coupled neurons, $\\beta=0.1$ and $\gamm
 ax[0].legend()
 ax[1].legend(bbox_to_anchor=(1, 1))
 
-plt.savefig('synchrony.png', dpi=600)
+plt.savefig('synchrony.svg')
 plt.show()

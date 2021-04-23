@@ -78,5 +78,5 @@ fig.suptitle('Network of 5 electrically coupled neurons, $\\beta=0.1$ and $\gamm
 ax[0].legend(bbox_to_anchor=(1.0525, 1))
 ax[1].legend(bbox_to_anchor=(1, 1))
 
-plt.savefig('5_neurons_different_I.png', dpi=600)
+plt.savefig('5_neurons_different_I.svg')
 #plt.show()

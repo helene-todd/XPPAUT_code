@@ -78,5 +78,5 @@ fig.suptitle('From A/S regime to S regime', size=14)
 ax[0,1].legend(loc='upper right', bbox_to_anchor=(1, 0.95))
 ax[1,1].legend(loc='upper right', bbox_to_anchor=(1, 0.95))
 
-plt.savefig('from_as_to_s.png', dpi=600)
+plt.savefig('from_as_to_s.svg')
 #plt.show()

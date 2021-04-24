@@ -29,6 +29,6 @@ Five electrically coupled neurons. Each neuron receives a rectangular pulse inpu
 
 ## Bifurcation Diagram
 
-### weak_coupling_bif.ode
+### bif_weak_coupling.ode
 The differential equation for phase difference under weak coupling. 
 

@@ -57,9 +57,9 @@ for filename in args.files :
 
             # if at last line, then stop checking for consecutive values and just add the remaining data
             if last_line_nb == datareader.line_num:
-                I[-1].append(last_I)
-                phi[-1].append(last_phi)
-                stability.append(last_stability)
+                I[-1].append(float(row[0]))
+                phi[-1].append(float(row[1]))
+                stability.append(int(row[3]))
 
             last_I = float(row[0])
             last_phi = float(row[1])

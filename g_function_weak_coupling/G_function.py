@@ -5,6 +5,7 @@ import math as math
 import random as rand
 
 """ G(phi) function in Rinzel & Lewis' article (2003) under weak coupling """
+""" This is under weak coupling theory, although one can note that gamma only serves to scale the function """
 
 c = ['#aa3863', '#d97020', '#ef9f07', '#449775', '#3b7d86']
 rcParams.update({'figure.autolayout': True})
@@ -20,34 +21,33 @@ def G(phi, I, gamma):
 
 """ Varying Gamma """
 
-gamma = [0.01, 0.1, 0.2, 0.4]
-beta = 0.2
-
+gamma = [0.4, 0.3, 0.2, 0.1, 0.01]
+beta = 0.1
+I = 1.8
 
 plt.figure(figsize=(8,5))
 vector_phi = np.linspace(0,1,1000)
 zero_line = np.zeros(len(vector_phi))
-plt.plot(vector_phi, zero_line, linestyle='--', color='k')
+plt.plot(vector_phi, zero_line, color='black', linestyle='--')
 
 k = 0
 for g in gamma :
     vector_G = []
     for el in vector_phi:
-        vector_G.append(G(el, 1.05, g))
+        vector_G.append(G(el, I, g))
     vector_G = np.array(vector_G)
     plt.plot(vector_phi, vector_G, label=f'$\gamma = {g}$', color = c[k])
     k += 1
 
-
 plt.xlabel('$\phi$', size=14)
 plt.ylabel('$G(\phi)$', size=14)
-plt.title('G function for $I=1.05$')
+plt.title(f'G function for $I={I}, \\beta={beta}$')
 
 zero_crossings = np.where(np.diff(np.sign(vector_G-zero_line)))[0]
 print(zero_crossings)
 
-plt.legend()
-plt.savefig('G_function_range_gammas.png', dpi=600)
+plt.legend(loc='upper left')
+plt.savefig(f'G_function_range_gammas_I={I}.png', dpi=600)
 plt.show()
 plt.close()
 

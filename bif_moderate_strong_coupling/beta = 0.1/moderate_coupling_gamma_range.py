@@ -34,7 +34,6 @@ def I_function(T, gamma, beta) :
     return -1/2*(beta*gamma*(math.exp((T*gamma + 1/2*T)) + math.exp((1/2*T))) - 2*math.exp((T*gamma + T)) + math.exp((T*gamma + 1/2*T)) - math.exp((1/2*T)))/(math.exp((T*gamma + T)) - math.exp((T*gamma + 1/2*T)) + math.exp((1/2*T)) - 1)
 
 beta = 0.1
-delta = 0.01
 
 # must be moderate or strong gammas
 gammas = [0.1, 0.2, 0.3, 0.4]
@@ -43,11 +42,12 @@ for gamma in gammas :
     if not os.path.exists(f'gamma_{gamma}.dat'):
         os.mknod(f'gamma_{gamma}.dat')
 
-xrange = np.arange(0., 1., delta) # phi
-yrange = np.arange(0., 2., delta) # I
+xrange = np.linspace(0, 1, 1001) # phi
+yrange = np.linspace(0, 20, 1001) # T
 X, Y = np.meshgrid(xrange,yrange)
 
 for gamma in gammas :
+    print(gamma)
 
     f = open(f'gamma_{gamma}.dat', 'w')
 
@@ -65,8 +65,8 @@ for gamma in gammas :
             low_I = I_function(T, gamma, beta)
             break
 
-    print(low_I)
-    for I in np.linspace(low_I, 2, 10000) :
+    for I in np.linspace(low_I, 2, 1000) :
+        print(I)
         F = - np.exp(-(1+2*gamma)*X*Y)*u2(X,Y, gamma, beta) - u1(X,Y, gamma, beta) +1 - np.exp(-(1+2*gamma)*X*Y)*gamma*beta
         G = 2*I*(1-np.exp(-(1-X)*Y)) + u1(X,Y, gamma, beta)*np.exp(-(1-X)*Y) -1 -u2(X,Y, gamma, beta) +gamma*beta*np.exp(-(1-X)*Y)
 
@@ -75,6 +75,19 @@ for gamma in gammas :
 
         intersection_points = findIntersection(c1,c2)
         #print(intersection_points)
+
+        plt.clf()
+        plt.close()
+
+        # For some reason, sometimes valid intersections are reduced to one point when in fact there are two..
+        if isinstance(intersection_points, geometry.point.Point) :
+            if round(intersection_points.x, 3) != 0.5 :
+                values_I.append(round(I, 7))
+                lower_fork.append(round(intersection_points.x, 7))
+                upper_fork.append(1-round(intersection_points.x, 7))
+                #print(lower_fork[-1])
+                #print(upper_fork[-1])
+                #print()
 
         # For a single point value : if isinstance(intersection_points, geometry.point.Point)
         if isinstance(intersection_points, geometry.multipoint.MultiPoint) :

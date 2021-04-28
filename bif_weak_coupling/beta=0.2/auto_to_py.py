@@ -1,4 +1,4 @@
-from matplotlib import cm
+from matplotlib import cm, rcParams
 import matplotlib.pyplot as plt
 import numpy as np
 import math as math
@@ -10,6 +10,8 @@ import argparse
 # TO DO : Rewrite this code to make it more readable.
 # USAGE : Run in terminal  "python auto_to_py.py bif_points_1.dat bif_points_2.dat bif_points_3.dat"
 
+plt.rcParams['axes.xmargin'] = 0
+
 p = argparse.ArgumentParser()
 p.add_argument('files', type=str, nargs='*')
 args = p.parse_args()
@@ -19,7 +21,7 @@ def row_count(filename):
         return sum(1 for _ in in_file)
 
 c = ['#B5EAD7', '#C7CEEA']
-s = ['-', '-']
+s = ['-', '--']
 
 I = [[]]
 phi = [[]]
@@ -60,9 +62,9 @@ for filename in args.files :
 
             # if at last line, then stop checking for consecutive values and just add the remaining data
             if last_line_nb == datareader.line_num:
-                I[-1].append(last_I)
-                phi[-1].append(last_phi)
-                stability.append(last_stability)
+                I[-1].append(float(row[0]))
+                phi[-1].append(float(row[1]))
+                stability.append(int(row[3]))
 
             last_I = float(row[0])
             last_phi = float(row[1])
@@ -73,20 +75,18 @@ plt.axvspan(1, 1.25925, facecolor='0.2', alpha=0.1)
 
 for k in range(len(I)) :
     if stability[k] == 1 :
-        plt.plot(I[k], phi[k], color=c[stability[k]-1], linestyle=s[stability[k]-1], label='stable')
+        plt.plot(I[k], phi[k], color='black', linestyle=s[stability[k]-1], label='stable')
     if stability[k] == 2 :
-        plt.plot(I[k], phi[k], color=c[stability[k]-1], linestyle=s[stability[k]-1], label='unstable')
-
-plt.xlim(1,2)
+        plt.plot(I[k], phi[k], color='black', linestyle=s[stability[k]-1], label='unstable')
 
 plt.title('Bifurcation diagram for two weakly coupled neurons, $\\beta =0.2$', fontsize=11)
-plt.xlabel('Current $I$')
-plt.ylabel('Phase Difference $\phi$')
+plt.xlabel('Current $I$', fontsize=10.5)
+plt.ylabel('Phase Difference $\phi$', fontsize=10.5)
 
 # remove duplicate legend
 handles, labels = plt.gca().get_legend_handles_labels()
 by_label = dict(zip(labels, handles))
 plt.legend(by_label.values(), by_label.keys(), loc='upper right', bbox_to_anchor=(1, 0.95))
 
-plt.savefig('bif_diagram_beta=0.2.png', dpi=600)
+plt.savefig('bif_diagram_beta=0.2.svg')
 #plt.show()

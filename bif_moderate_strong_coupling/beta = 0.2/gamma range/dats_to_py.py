@@ -1,4 +1,4 @@
-from matplotlib import cm
+from matplotlib import cm, rcParams
 import matplotlib.pyplot as plt
 import numpy as np
 import math as math
@@ -9,6 +9,9 @@ import argparse
 
 # TO DO : Rewrite this code to make it more readable.
 # USAGE : Run in terminal "python dats_to_py.py gamma_0.4.dat gamma_0.3.dat gamma_0.2.dat gamma_0.1.dat weak_coupling.dat line.dat stable1.dat stable2.dat".
+
+plt.rcParams['axes.xmargin'] = 0
+
 
 p = argparse.ArgumentParser()
 p.add_argument('files', type=str, nargs='*')
@@ -38,12 +41,14 @@ for filename in args.files :
         # seperate by checking if two consecutive values are duplicates
         for row in datareader:
 
-            # this last condition avoids a list with one value when two consecutive values are duplicates
-            if last_I == float(row[0]) and len(I[-1]) > 1 :
-                I.append([])
-                phi.append([])
-                if last_stability != 0 :
-                    stability.append(last_stability)
+            # this last condition avoids a list with one value when two consecutive values are duplicates,
+            # but the values phi defer (e.g. at the fork bifurcation)
+            # however sometimes xppaut duplicates lines when outputting files, in which case we ignore
+            if last_I == float(row[0]) and last_phi != float(row[1]) and len(I[-1]) > 2 :
+                    I.append([])
+                    phi.append([])
+                    if last_stability != 0 :
+                        stability.append(last_stability)
 
             if last_I != -999 :
                 I[-1].append(last_I)
@@ -65,6 +70,7 @@ for filename in args.files :
             last_phi = float(row[1])
             last_stability = int(row[3])
 
+
 plt.figure(figsize=(8,6))
 
 g = [0.4, 0.3, 0.2, 0.1, 'weak']
@@ -85,9 +91,9 @@ for k in range(len(I)) :
         if stability[k] == 2 :
             plt.plot(I[k], phi[k], color='black', linestyle=s[1])
 
-plt.title('Bifurcation diagram for two coupled neurons, $\\beta=0.2$', fontsize=13)
-plt.xlabel('Current $I$', fontsize=12)
-plt.ylabel('Phase Difference $\phi$', fontsize=12)
+plt.title('Bifurcation diagram for two coupled neurons, $\\beta=0.2$', fontsize=11)
+plt.xlabel('Current $I$', fontsize=10.5)
+plt.ylabel('Phase Difference $\phi$', fontsize=10.5)
 
 # remove duplicate legend
 handles, labels = plt.gca().get_legend_handles_labels()

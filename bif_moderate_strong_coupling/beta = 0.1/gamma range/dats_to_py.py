@@ -1,4 +1,4 @@
-from matplotlib import cm
+from matplotlib import cm, rcParams
 import matplotlib.pyplot as plt
 import numpy as np
 import math as math
@@ -9,6 +9,8 @@ import argparse
 
 # TO DO : Rewrite this code to make it more readable.
 # USAGE : Run in terminal "python dats_to_py.py gamma_0.4.dat gamma_0.3.dat gamma_0.2.dat gamma_0.1.dat weak_coupling.dat line.dat stable1.dat stable2.dat".
+
+plt.rcParams['axes.xmargin'] = 0
 
 p = argparse.ArgumentParser()
 p.add_argument('files', type=str, nargs='*')

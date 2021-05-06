@@ -32,3 +32,8 @@ Five electrically coupled neurons. Each neuron receives a rectangular pulse inpu
 ### bif_weak_coupling.ode
 The differential equation for phase difference under weak coupling. 
 
+## Notes
+
+### with_noise
+I had to omit the .dat files due to their large size (~1.4GB). However, these files can easily be generated using XPPAUT since the .ode file and parameters I
+ used are included in their respective folders. It can also be worth mentioning that one can slightly modify the source code of XPPAUT (more precisely 'integrate.c') in order to achieve a greater decimal precision in the .dat output file when exporting data (by default it is 6 significant digits, which is problematic for t > 1000 with dt = 0.001).
